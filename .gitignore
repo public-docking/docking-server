@@ -1,0 +1,6 @@
+node_modules
+coverage
+
+ligand/*.pdbqt
+receptor/*.pdbqt
+receptor/*.txt
