@@ -35,6 +35,9 @@ Basic server for autodock vina jobs
     cd docking-server
     npm ci
     
+    npm run db:create
+    npm run db:migrate
+    
     # you can check that all is ok
     ./test_start.coffee
     # fill receptor folder
