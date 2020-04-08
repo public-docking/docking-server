@@ -5,10 +5,12 @@ WebSocket = require "ws"
 config = require "./config"
 {sync, download} = require "./static"
 mod_task = require "./task"
+db = require "../models"
 
 wss = null
 wss = new WebSocket.Server port : config.port
 
+puts "server starting..."
 wss.on "connection", (con)->
   puts "connection"
   con.__inject_free_slot = 0

@@ -5,6 +5,10 @@ fs = require "fs"
 config = require "./config"
 
 ev = new Event_mixin
+for v in "on off once".split /\s+/g
+  do (v)->
+    module[v] = (event, handler)->
+      ev[v] event, handler
 
 @ligand_map   = new Map
 @receptor_map = new Map
@@ -46,8 +50,3 @@ do ()->
   puts "initial sync done"
   module.initialized = true
   ev.dispatch "initialized"
-
-for v in "on off once".split /\s+/g
-  do (v)->
-    module[v] = (event, handler)->
-      ev[v] event, handler
