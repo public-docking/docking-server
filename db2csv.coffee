@@ -14,12 +14,19 @@ csv_cont_jl = []
 for receptor in res_receptor
   await db.Task.findAll({where:{receptor_fid: receptor.id}}).then defer(res_task)
   
+  res_per_receptor_list = []
+  
   for task in res_task
-    csv_cont_jl.push CSV.stringify [
-      receptor.display_name
-      ligand_map.get(task.ligand_fid)
-      +task.result_energy
-    ]
+    res_per_receptor_list.push {
+      receptor: receptor.display_name
+      ligand  : ligand_map.get(task.ligand_fid)
+      energy  : +task.result_energy
+    }
+  
+  # natsort
+  res_per_receptor_list.sort (a,b)->(a.energy-b.energy) or (a.ligand.localeCompare(b.ligand, undefined, {numeric: true, sensitivity: "base"}))
+  for v in res_per_receptor_list
+    csv_cont_jl.push CSV.stringify [v.receptor, v.ligand, v.energy]
 
 fs.writeFileSync "dump.csv", csv_cont_jl.join ""
 process.exit() # sequelize connect
